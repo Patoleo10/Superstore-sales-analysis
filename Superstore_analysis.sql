@@ -23,3 +23,15 @@ ROUND(SUM("Sales"), 2) AS total_sales
 FROM superstore_sales
 GROUP BY month
 ORDER BY month;
+
+-- Query 5: Top 10 Products with Above Average Sales
+select "Product Name", SUM("Sales") as total_product_sales
+FROM superstore_sales
+GROUP BY "Product Name"
+HAVING SUM("Sales") >
+(SELECT avg(Product_sales) from
+(SELECT "Product Name", SUM("Sales") as Product_sales
+FROM superstore_sales
+GROUP by "Product Name") as P_Sales)
+ORDER BY total_product_sales DESC
+LIMIT 10;
