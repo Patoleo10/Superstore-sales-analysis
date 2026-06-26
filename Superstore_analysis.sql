@@ -35,3 +35,12 @@ FROM superstore_sales
 GROUP by "Product Name") as P_Sales)
 ORDER BY total_product_sales DESC
 LIMIT 10;
+
+-- Query 6: Shows each Regions Total Sales alongside the overall Total Sales and Percentages
+SELECT "Region", SUM("Sales") AS region_sales,
+(SELECT SUM("Sales")
+FROM superstore_sales) as overall_total,
+ROUND(SUM("Sales")/ (SELECT SUM("Sales") FROM superstore_sales) * 100, 2) AS "Percentage %"
+FROM superstore_sales
+GROUP BY "Region"
+ORDER BY region_sales DESC
