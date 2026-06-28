@@ -44,3 +44,16 @@ ROUND(SUM("Sales")/ (SELECT SUM("Sales") FROM superstore_sales) * 100, 2) AS "Pe
 FROM superstore_sales
 GROUP BY "Region"
 ORDER BY region_sales DESC
+
+-- Query 7: Shows insights On Each Region's Total Sales, Percentage and Performance Classification
+SELECT "Region",
+SUM("Sales") AS total_sales,
+ROUND(SUM("Sales")/ (SELECT SUM("Sales") FROM superstore_sales) * 100, 2) AS "Percentage %",
+CASE
+WHEN SUM("Sales") > 700000 THEN 'HIGH'
+WHEN SUM("Sales") > 500000 THEN 'MEDIUM'
+ELSE 'LOW'
+END AS performance
+FROM superstore_sales
+GROUP BY "Region"
+ORDER BY total_sales DESC;
