@@ -57,3 +57,16 @@ END AS performance
 FROM superstore_sales
 GROUP BY "Region"
 ORDER BY total_sales DESC;
+
+-- Query 8: Shows The Top 10 Customer's Total Purchases And Segments they belong to.
+SELECT o."Customer Name",
+o."Segment",
+ROUND(SUM(o."Sales"), 2) AS total_purchases,
+COUNT(DISTINCT o."Order ID") AS total_orders
+FROM superstore_sales o
+JOIN superstore_sales c
+ON o."Customer ID"=c."Customer ID"
+GROUP BY o."Customer Name", o."Segment"
+ORDER BY total_purchases DESC
+LIMIT 10
+
