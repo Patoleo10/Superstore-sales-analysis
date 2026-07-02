@@ -86,3 +86,21 @@ FROM superstore_sales
 WHERE EXTRACT(QUARTER FROM "Order Date") = 4
 GROUP BY "Segment"
 ORDER BY "Segment";
+
+-- Query 11: Three way Join: segment by category total sales
+SELECT
+Customers."Segment",
+Products."Category",
+ROUND(SUM(Orders."Sales"), 2) as total_sales
+FROM
+(SELECT DISTINCT "Order ID", "Customer ID",
+"Product ID", "Sales"
+FROM superstore_sales) as Orders
+join
+(SELECT DISTINCT"Customer ID", "Customer Name", "Segment" FROM superstore_sales) as Customers
+on Orders."Customer ID"= Customers."Customer ID"
+JOIN
+(SELECT DISTINCT "Product ID", "Product Name", "Category" FROM superstore_sales) as Products
+on Orders."Product ID" = Products."Product ID"
+GROUP BY 1, 2
+ORDER BY  total_sales DESC
