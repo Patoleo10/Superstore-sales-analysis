@@ -70,3 +70,19 @@ GROUP BY o."Customer Name", o."Segment"
 ORDER BY total_purchases DESC
 LIMIT 10
 
+-- Query 9: Shows the Quarterly Sales Trend by Year.
+SELECT
+EXTRACT(YEAR FROM "ORDER DATE") AS Year,
+EXTRACT(QUARTER FROM "ORDER DATE") AS Quarter,
+ROUND(SUM("SALES"), 2) AS total_sales
+FROM superstore_sales
+GROUP BY Year, Quarter
+ORDER BY Year, Quarter;
+
+-- Query 10: Shows Q4 Sales by Segment.
+SELECT "Segment",
+ROUND(SUM("Sales"), 2) AS total_sales
+FROM superstore_sales
+WHERE EXTRACT(QUARTER FROM "Order Date") = 4
+GROUP BY "Segment"
+ORDER BY "Segment";
