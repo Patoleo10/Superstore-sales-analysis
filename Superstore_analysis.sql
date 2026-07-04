@@ -104,3 +104,11 @@ JOIN
 on Orders."Product ID" = Products."Product ID"
 GROUP BY 1, 2
 ORDER BY  total_sales DESC
+
+-- Query 12: Shows Loyal Consistent Customers Since Inception
+SELECT "Customer ID", "Customer Name", 
+COUNT(DISTINCT Extract (YEAR FROM "Order Date")) AS Years_active
+FROM superstore_sales
+GROUP BY 1,2
+HAVING Years_active >= 2
+ORDER BY Years_active DESC
