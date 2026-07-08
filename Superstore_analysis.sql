@@ -133,3 +133,13 @@ from(select sum("Sales") as customer_sales from superstore_sales
 group by "Customer ID"
 order by customer_sales desc
 LIMIT 20) as top_20
+
+-- Query 14
+select "Sub-Category",
+sum(case when EXTRACT (year from "Order Date") = 2017 then "Sales" ELSE 0 END) AS sales_2017,
+sum(case when EXTRACT (year from "Order Date") = 2018 then "Sales" ELSE 0 END) AS sales_2018,
+ROUND(sales_2018 - sales_2017, 2) as sales_difference
+from superstore_sales
+group by "Sub-Category"
+having sales_2018 < sales_2017
+ORDER by sales_2017 DESC 
