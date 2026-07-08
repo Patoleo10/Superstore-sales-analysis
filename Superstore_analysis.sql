@@ -112,3 +112,24 @@ FROM superstore_sales
 GROUP BY 1,2
 HAVING Years_active >= 2
 ORDER BY Years_active DESC
+
+-- Query 13 is divided into two
+-- 13a. Shows the top 20 Customer Revenue Breakdown and Percentage
+select
+"Customer ID",
+"Customer Name",
+ROUND(SUM("Sales"), 2) as customer_sales,
+ROUND(SUM("Sales") / (select SUM("Sales") from superstore_sales) * 100, 2) as revenue_percentage
+from superstore_sales
+group by 1, 2
+order by customer_sales DESC
+LIMIT 20
+
+-- 13b. Shows Customer Revenue Concentration (CEO Summary)
+select
+ROUND(SUM("customer_sales") / 
+(select SUM("Sales") from superstore_sales) * 100, 2) as top20_revenue_percentage
+from(select sum("Sales") as customer_sales from superstore_sales
+group by "Customer ID"
+order by customer_sales desc
+LIMIT 20) as top_20
